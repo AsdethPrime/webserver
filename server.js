@@ -1,7 +1,23 @@
 // Preliminary setup 
 var http = require('http');
+var fs = require('fs');
 PORT = 8080;
 var count = 0 ;
+
+//serving static content
+function serveStaticFile(res, path, contentType, responseCode) {
+    if (!responseCode) responseCode = 200 ;
+    fs.readFile(__dirname + path, function (err, data){
+        if (err) {
+            res.writeHead(500, { 'Content-Type': 'text/plain'});
+            res.end('500 - Internal Error');
+        } else {
+            res.writeHead(responseCode, 
+                {'Content-Type': contentType });
+                res.end(data);
+        }
+    });
+}
 
 // Request handler function
 function requestHandler (req, res){
@@ -12,31 +28,24 @@ function requestHandler (req, res){
     count += 1;
 
     switch (req.url) {
-        case '/manish':
-            message = 'My Lord has arrived, I bow before your granduer!!!!';
-        break;
+        case '/about':
+            serveStaticFile(res, '/public/about.html', 'text/html');
+            break;
 
-        case '/hello':
-            message = 'World!';
-        break;
+        case '/home':
+            serveStaticFile(res, '/public/home.html', 'text/html');
+            break;
 
         default :
-            status = 404 ;
-            message = "Not found";
+            serveStaticFile(res, '/public/notfound.html', 'text/html');
             break ;
     };
-    // Writing the header of response 
-    res.writeHead(201, {
-        'Content-Type':'text/plain'
-    });    
+    
 
     // logging to the console 
     console.log(req.method, req.url, status, message);
 
-    // sending out the response
-    res.end(message);
 };
-
 // Creates the web server and listens on PORT 
 var server = http.createServer(requestHandler);
 server.listen(PORT, function() {
