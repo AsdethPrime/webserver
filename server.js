@@ -21,8 +21,7 @@ function serveStaticFile(res, path, contentType, responseCode) {
 
 // Request handler function
 function requestHandler (req, res){
-    // this function decices what to put as the message and status.
-    // default message is Notfound and default status is 404 
+    // This is the poor man's router function
     var status = 200;
     count += 1;
     
