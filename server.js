@@ -23,10 +23,9 @@ function serveStaticFile(res, path, contentType, responseCode) {
 function requestHandler (req, res){
     // this function decices what to put as the message and status.
     // default message is Notfound and default status is 404 
-    var message ;
     var status = 200;
     count += 1;
-
+    
     switch (req.url) {
         case '/about':
             serveStaticFile(res, '/public/about.html', 'text/html');
@@ -43,7 +42,7 @@ function requestHandler (req, res){
     
 
     // logging to the console 
-    console.log(req.method, req.url, status, message);
+    console.log(req.method, req.url, status);
 
 };
 // Creates the web server and listens on PORT 
